@@ -1,8 +1,0 @@
-Django==1.10.3
-djangorestframework==3.5.3
-Sphinx==1.4.9
-
-pytest
-pytest-django
-pep8
-flake8
