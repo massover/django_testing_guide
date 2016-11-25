@@ -12,7 +12,7 @@ lint:
 
 gh-pages:
 	rm -rfv $TEMP_DIR
-	git clone git@github.com:massover/django_testing_guide.git /tmp
+	git clone git@github.com:massover/django_testing_guide.git /tmp/django_testing_guide
 	cd $TEMP_DIR && git checkout gh-pages
 	cd $TEMP_DIR && rm -rf ./*
 	cd $TEMP_DIR && virtualenv --python=$(which python3) venv
