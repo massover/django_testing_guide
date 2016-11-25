@@ -1,5 +1,5 @@
 GH_PAGES_SOURCES = docs dogs Makefile .nojekyll requirements.txt
-TEMP_DIR = /tmp/django_testing_guide
+PATH = /tmp/django_testing_guide
 
 html:
 	cd docs && $(MAKE) html
@@ -11,23 +11,22 @@ lint:
 	flake8 docs/conf.py
 
 gh-pages:
-	rm -rfv $(TEMP_DIR)
+	rm -rfv $(PATH)
 	git clone git@github.com:massover/django_testing_guide.git /tmp/django_testing_guide
-	cd $(TEMP_DIR) && git checkout gh-pages
-	cd $(TEMP_DIR) && rm -rf ./*
+	cd $(PATH); git checkout gh-pages
+	cd $(PATH); rm -rf ./*
 
-	cd $(TEMP_DIR) && git checkout master $(GH_PAGES_SOURCES)
-	cd $(TEMP_DIR) && git reset HEAD
+	cd $(PATH); git checkout master $(GH_PAGES_SOURCES)
+	cd $(PATH); git reset HEAD
 
-	cd $(TEMP_DIR) && virtualenv --python=$(which python3) venv
-	cd $(TEMP_DIR) && source venv/bin/activate
-	cd $(TEMP_DIR) && pip install -r requirements.txt
+	cd $(PATH); virtualenv --python=$(which python3) venv
+	cd $(PATH); source venv/bin/activate; pip install -r requirements.txt
 
-	cd $(TEMP_DIR) && make html
-	cd $(TEMP_DIR) && mv -fv docs/_build/html/* ./
-	cd $(TEMP_DIR) && rm -rf $(GH_PAGES_SOURCES)
-	cd $(TEMP_DIR) && git add -A
-	cd $(TEMP_DIR) \
+	cd $(PATH); source venv/bin/activate; make html
+	cd $(PATH); mv -fv docs/_build/html/* ./
+	cd $(PATH); rm -rf $(GH_PAGES_SOURCES)
+	cd $(PATH); git add -A
+	cd $(PATH) \
 	    && git ci -m "Generated gh-pages for `git log master -1 --pretty=short --abbrev-commit`" \
 		&& git push origin gh-pages \
 		&& git checkout master
