@@ -1,4 +1,4 @@
-GH_PAGES_SOURCES = docs dogs Makefile .nojekyll requirements.txt
+GH_PAGES_SOURCES = docs dogs Makefile requirements.txt
 PROJECT_ROOT = /tmp/django_testing_guide
 
 html:
@@ -25,6 +25,7 @@ gh-pages:
 	cd $(PROJECT_ROOT); source venv/bin/activate; make html
 	cd $(PROJECT_ROOT); mv -fv docs/_build/html/* ./
 	cd $(PROJECT_ROOT); rm -rf $(GH_PAGES_SOURCES)
+	cd $(PROJECT_ROOT); touch .nojekyll
 	cd $(PROJECT_ROOT); git add -A
 	cd $(PROJECT_ROOT) \
 	    && git commit -m "Generated gh-pages for `git log master -1 --pretty=short --abbrev-commit`" \
