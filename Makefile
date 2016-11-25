@@ -1,4 +1,4 @@
-GH_PAGES_SOURCES = docs dogs Makefile
+GH_PAGES_SOURCES = docs dogs Makefile .nojekyll
 
 html:
 	cd docs && $(MAKE) html
