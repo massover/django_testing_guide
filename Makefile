@@ -9,7 +9,7 @@ lint:
 
 publish:
 	git checkout gh-pages
-	rm -rf .
+	rm -rf ./*
 	touch .nojekyll
 	git checkout master docs/_build/html
 	mv ./docs/build/html/* ./
