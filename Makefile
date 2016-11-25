@@ -27,6 +27,6 @@ gh-pages:
 	cd $(PROJECT_ROOT); rm -rf $(GH_PAGES_SOURCES)
 	cd $(PROJECT_ROOT); git add -A
 	cd $(PROJECT_ROOT) \
-	    && git ci -m "Generated gh-pages for `git log master -1 --pretty=short --abbrev-commit`" \
+	    && git commit -m "Generated gh-pages for `git log master -1 --pretty=short --abbrev-commit`" \
 		&& git push origin gh-pages \
 		&& git checkout master
