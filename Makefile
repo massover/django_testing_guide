@@ -8,3 +8,13 @@ lint:
 	flake8 docs/conf.py
 
 publish:
+	git checkout gh-pages
+	rm -rf .
+	touch .nojekyll
+	git checkout master docs/_build/html
+	mv ./docs/build/html/* ./
+	rm -rf ./docs
+	git add -A
+	git commit -m "publishing updated docs..."
+	git push origin gh-pages
+	git checkout master
