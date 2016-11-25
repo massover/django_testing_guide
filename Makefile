@@ -12,7 +12,7 @@ lint:
 
 gh-pages:
 	rm -rfv $(PROJECT_ROOT)
-	git clone git@github.com:massover/django_testing_guide.git /tmp/django_testing_guide
+	git clone git@github.com:massover/django_testing_guide.git $(PROJECT_ROOT)
 	cd $(PROJECT_ROOT); git checkout gh-pages
 	cd $(PROJECT_ROOT); rm -rf ./*
 
