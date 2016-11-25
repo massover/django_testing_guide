@@ -1,4 +1,4 @@
-GH_PAGES_SOURCES = docs dogs Makefile .nojekyll
+GH_PAGES_SOURCES = docs dogs Makefile .nojekyll requirements.txt
 
 html:
 	cd docs && $(MAKE) html
@@ -10,8 +10,15 @@ lint:
 	flake8 docs/conf.py
 
 gh-pages:
+    rm -rf /tmp/django_testing_guide
+    cd /tmp
+    git clone git@github.com:massover/django_testing_guide.git
+    cd django_testing_guide
 	git checkout gh-pages
 	rm -rf ./*
+	virtualenv --python=$(which python3) venv
+	source venv/bin/activate
+	pip install -r requirements.txt
 	git checkout master $(GH_PAGES_SOURCES)
 	git reset HEAD
 	make html
