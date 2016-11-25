@@ -15,11 +15,14 @@ gh-pages:
 	git clone git@github.com:massover/django_testing_guide.git /tmp/django_testing_guide
 	cd $(TEMP_DIR) && git checkout gh-pages
 	cd $(TEMP_DIR) && rm -rf ./*
+
+	cd $(TEMP_DIR) && git checkout master $(GH_PAGES_SOURCES)
+	cd $(TEMP_DIR) && git reset HEAD
+
 	cd $(TEMP_DIR) && virtualenv --python=$(which python3) venv
 	cd $(TEMP_DIR) && source venv/bin/activate
 	cd $(TEMP_DIR) && pip install -r requirements.txt
-	cd $(TEMP_DIR) && git checkout master $(GH_PAGES_SOURCES)
-	cd $(TEMP_DIR) && git reset HEAD
+
 	cd $(TEMP_DIR) && make html
 	cd $(TEMP_DIR) && mv -fv docs/_build/html/* ./
 	cd $(TEMP_DIR) && rm -rf $(GH_PAGES_SOURCES)
