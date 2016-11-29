@@ -3,3 +3,6 @@ venv/*
 .cache/
 
 docs/_build
+__pycache__/
+
+db.sqlite3

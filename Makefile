@@ -7,8 +7,11 @@ html:
 lint:
 	flake8 django_testing_guide --exclude=django_testing_guide/settings.py
 	flake8 django_testing_guide/settings.py --ignore=E501
-	flake8 dogs
+	flake8 dogs --exclude=dogs/migrations
 	flake8 docs/conf.py
+
+open:
+	open docs/_build/html/index.html
 
 gh-pages:
 	rm -rfv $(PROJECT_ROOT)
@@ -28,6 +31,6 @@ gh-pages:
 	cd $(PROJECT_ROOT); touch .nojekyll
 	cd $(PROJECT_ROOT); git add -A
 	cd $(PROJECT_ROOT) \
-	    && git commit -m "Generated gh-pages for `git log master -1 --pretty=short --abbrev-commit`" \
+		&& git commit -m "Generated gh-pages for `git log master -1 --pretty=short --abbrev-commit`" \
 		&& git push origin gh-pages \
 		&& git checkout master

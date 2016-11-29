@@ -19,12 +19,13 @@
 #
 import os
 import sys
-
+import django
 os.environ.setdefault(
     "DJANGO_SETTINGS_MODULE",
     "django_testing_guide.settings"
 )
 sys.path.insert(0, os.path.abspath('..'))
+django.setup()
 
 # -- General configuration ------------------------------------------------
 

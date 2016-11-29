@@ -11,7 +11,7 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-   testing_serializers
+   testing_model_serializers
 
 Indices and tables
 ==================
