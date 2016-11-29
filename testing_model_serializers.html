@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Testing Model Serializers &#8212; Django Testing Guide 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="top" title="Django Testing Guide 0.0.1 documentation" href="index.html" />
+    <link rel="prev" title="Welcome to Django Testing Guide’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-dogs.tests.test_model_serializers">
+<span id="testing-model-serializers"></span><h1>Testing Model Serializers<a class="headerlink" href="#module-dogs.tests.test_model_serializers" title="Permalink to this headline">¶</a></h1>
+<p>3 useful tests that cover <code class="docutils literal"><span class="pre">ModelSerializer</span></code> behavior are:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">test_deserialize_all_fields</span></code></li>
+<li><code class="docutils literal"><span class="pre">test_deserialize_required_fields</span></code> (optional)</li>
+<li><code class="docutils literal"><span class="pre">test_serialize_all_fields</span></code></li>
+</ul>
+<p>For code that implements create functionality, implement the
+<code class="docutils literal"><span class="pre">deserialize_all_fields</span></code> and <code class="docutils literal"><span class="pre">deserialize_required_fields</span></code> tests. For code
+that only implements read functionality, implement <code class="docutils literal"><span class="pre">serialize_all_fields</span></code>
+tests.</p>
+<dl class="function">
+<dt id="dogs.tests.test_model_serializers.test_deserialize_all_fields">
+<code class="descclassname">dogs.tests.test_model_serializers.</code><code class="descname">test_deserialize_all_fields</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dogs/tests/test_model_serializers.html#test_deserialize_all_fields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dogs.tests.test_model_serializers.test_deserialize_all_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test all fields of the deserialization. Validate the
+<code class="docutils literal"><span class="pre">serializer.save()</span></code> deserializes and creates a new object in the
+datastore with all fields.</p>
+<ul class="simple">
+<li>Initialize <code class="docutils literal"><span class="pre">serializer</span></code> with all fields</li>
+<li>Assert <code class="docutils literal"><span class="pre">serializer.is_valid()</span></code> is <code class="docutils literal"><span class="pre">True</span></code></li>
+<li>Deserialize with <code class="docutils literal"><span class="pre">serializer.save()</span></code></li>
+<li>Assert one new object is created in the datastore</li>
+<li>Assert required fields are on new object in the datastore</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="dogs.tests.test_model_serializers.test_deserialize_required_fields">
+<code class="descclassname">dogs.tests.test_model_serializers.</code><code class="descname">test_deserialize_required_fields</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dogs/tests/test_model_serializers.html#test_deserialize_required_fields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dogs.tests.test_model_serializers.test_deserialize_required_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test the required fields of the deserialization. Validate the
+<code class="docutils literal"><span class="pre">serializer.save()</span></code> deserializes and creates a new object in the
+datastore with the required fields.</p>
+<ul class="simple">
+<li>Initialize <code class="docutils literal"><span class="pre">serializer</span></code> with empty data set</li>
+<li>Assert <code class="docutils literal"><span class="pre">serializer.is_valid()</span></code> is <code class="docutils literal"><span class="pre">False</span></code></li>
+<li>Assert <code class="docutils literal"><span class="pre">len(serializer.errors)</span></code> reflects the number of required fields</li>
+<li>Initialize <code class="docutils literal"><span class="pre">serializer</span></code> with only required fields</li>
+<li>Assert <code class="docutils literal"><span class="pre">serializer.is_valid()</span></code> is <code class="docutils literal"><span class="pre">True</span></code></li>
+<li>Deserialize with <code class="docutils literal"><span class="pre">serializer.save()</span></code></li>
+<li>Assert one new object is created in the datastore</li>
+<li>Assert required fields are on new object in the datastore</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="dogs.tests.test_model_serializers.test_serialize_all_fields">
+<code class="descclassname">dogs.tests.test_model_serializers.</code><code class="descname">test_serialize_all_fields</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dogs/tests/test_model_serializers.html#test_serialize_all_fields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dogs.tests.test_model_serializers.test_serialize_all_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test all fields of the serialization. Validate the
+<code class="docutils literal"><span class="pre">serializer.data</span></code> contains all fields.</p>
+<ul class="simple">
+<li>Create instance of object</li>
+<li>Initialize serializer with object instance</li>
+<li>Assert all fields are <code class="docutils literal"><span class="pre">serializer.data</span></code></li>
+</ul>
+</dd></dl>
+
+<span class="target" id="module-dogs.models"></span><dl class="class">
+<dt id="dogs.models.Dog">
+<em class="property">class </em><code class="descclassname">dogs.models.</code><code class="descname">Dog</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dogs/models.html#Dog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dogs.models.Dog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Example Model</p>
+</dd></dl>
+
+<span class="target" id="module-dogs.serializers"></span><dl class="class">
+<dt id="dogs.serializers.DogSerializer">
+<em class="property">class </em><code class="descclassname">dogs.serializers.</code><code class="descname">DogSerializer</code><span class="sig-paren">(</span><em>instance=None</em>, <em>data=&lt;class rest_framework.fields.empty&gt;</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dogs/serializers.html#DogSerializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dogs.serializers.DogSerializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Example Serializer</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to Django Testing Guide&#8217;s documentation!</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/testing_model_serializers.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Voxy.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.9</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="_sources/testing_model_serializers.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

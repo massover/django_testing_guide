@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>dogs.tests.test_model_serializers &#8212; Django Testing Guide 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="top" title="Django Testing Guide 0.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for dogs.tests.test_model_serializers</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">3 useful tests that cover ``ModelSerializer`` behavior are:</span>
+
+<span class="sd">- ``test_deserialize_all_fields``</span>
+<span class="sd">- ``test_deserialize_required_fields`` (optional)</span>
+<span class="sd">- ``test_serialize_all_fields``</span>
+
+<span class="sd">For code that implements create functionality, implement the</span>
+<span class="sd">``deserialize_all_fields`` and ``deserialize_required_fields`` tests. For code</span>
+<span class="sd">that only implements read functionality, implement ``serialize_all_fields``</span>
+<span class="sd">tests.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
+
+<span class="kn">from</span> <span class="nn">..serializers</span> <span class="k">import</span> <span class="n">DogSerializer</span>
+<span class="kn">from</span> <span class="nn">..models</span> <span class="k">import</span> <span class="n">Dog</span>
+
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">django_db</span>
+<div class="viewcode-block" id="test_deserialize_required_fields"><a class="viewcode-back" href="../../../testing_model_serializers.html#dogs.tests.test_model_serializers.test_deserialize_required_fields">[docs]</a><span class="k">def</span> <span class="nf">test_deserialize_required_fields</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Test the required fields of the deserialization. Validate the</span>
+<span class="sd">    ``serializer.save()`` deserializes and creates a new object in the</span>
+<span class="sd">    datastore with the required fields.</span>
+
+<span class="sd">    - Initialize ``serializer`` with empty data set</span>
+<span class="sd">    - Assert ``serializer.is_valid()`` is ``False``</span>
+<span class="sd">    - Assert ``len(serializer.errors)`` reflects the number of required fields</span>
+
+<span class="sd">    - Initialize ``serializer`` with only required fields</span>
+<span class="sd">    - Assert ``serializer.is_valid()`` is ``True``</span>
+
+<span class="sd">    - Deserialize with ``serializer.save()``</span>
+<span class="sd">    - Assert one new object is created in the datastore</span>
+<span class="sd">    - Assert required fields are on new object in the datastore</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">serializer</span> <span class="o">=</span> <span class="n">DogSerializer</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">errors</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;bruce&#39;</span><span class="p">}</span>
+    <span class="n">serializer</span> <span class="o">=</span> <span class="n">DogSerializer</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span>
+
+    <span class="n">serializer</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">Dog</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span>
+
+    <span class="n">dog</span> <span class="o">=</span> <span class="n">Dog</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">dog</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;bruce&#39;</span></div>
+
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">django_db</span>
+<div class="viewcode-block" id="test_deserialize_all_fields"><a class="viewcode-back" href="../../../testing_model_serializers.html#dogs.tests.test_model_serializers.test_deserialize_all_fields">[docs]</a><span class="k">def</span> <span class="nf">test_deserialize_all_fields</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Test all fields of the deserialization. Validate the</span>
+<span class="sd">    ``serializer.save()`` deserializes and creates a new object in the</span>
+<span class="sd">    datastore with all fields.</span>
+
+<span class="sd">    - Initialize ``serializer`` with all fields</span>
+<span class="sd">    - Assert ``serializer.is_valid()`` is ``True``</span>
+
+<span class="sd">    - Deserialize with ``serializer.save()``</span>
+<span class="sd">    - Assert one new object is created in the datastore</span>
+<span class="sd">    - Assert required fields are on new object in the datastore</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;bruce&#39;</span><span class="p">,</span> <span class="s1">&#39;breed&#39;</span><span class="p">:</span> <span class="s1">&#39;bulldog&#39;</span><span class="p">}</span>
+    <span class="n">serializer</span> <span class="o">=</span> <span class="n">DogSerializer</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span>
+
+    <span class="n">serializer</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">Dog</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span>
+
+    <span class="n">dog</span> <span class="o">=</span> <span class="n">Dog</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">dog</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;bruce&#39;</span>
+    <span class="k">assert</span> <span class="n">dog</span><span class="o">.</span><span class="n">breed</span> <span class="o">==</span> <span class="s1">&#39;bulldog&#39;</span></div>
+
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">django_db</span>
+<div class="viewcode-block" id="test_serialize_all_fields"><a class="viewcode-back" href="../../../testing_model_serializers.html#dogs.tests.test_model_serializers.test_serialize_all_fields">[docs]</a><span class="k">def</span> <span class="nf">test_serialize_all_fields</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Test all fields of the serialization. Validate the</span>
+<span class="sd">    ``serializer.data`` contains all fields.</span>
+
+<span class="sd">    - Create instance of object</span>
+<span class="sd">    - Initialize serializer with object instance</span>
+<span class="sd">    - Assert all fields are ``serializer.data``</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dog</span> <span class="o">=</span> <span class="n">Dog</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;bruce&#39;</span><span class="p">,</span> <span class="n">breed</span><span class="o">=</span><span class="s1">&#39;bulldog&#39;</span><span class="p">)</span>
+    <span class="n">serializer</span> <span class="o">=</span> <span class="n">DogSerializer</span><span class="p">(</span><span class="n">dog</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;bruce&#39;</span>
+    <span class="k">assert</span> <span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;breed&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;bulldog&#39;</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Voxy.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.9</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
