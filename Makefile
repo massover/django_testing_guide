@@ -1,4 +1,4 @@
-GH_PAGES_SOURCES = docs dogs Makefile requirements.txt
+GH_PAGES_SOURCES = docs dogs Makefile requirements.txt django_testing_guide
 PROJECT_ROOT = /tmp/django_testing_guide
 
 html:
